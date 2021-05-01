@@ -34,7 +34,7 @@ class RestaurantTest {
         boolean isTimeValid = mockRestauraunt.isRestaurantOpen();
 
         //Assert
-        Assertions.assertTrue(isTimeValid,"Restaurant should be open.");
+        assertTrue(isTimeValid,"Restaurant should be open.");
 
     }
 
@@ -50,7 +50,7 @@ class RestaurantTest {
         boolean isTimeValid = mockRestauraunt.isRestaurantOpen();
 
         //Assert
-        Assertions.assertFalse(isTimeValid,"Restaurant should be open.");
+        assertFalse(isTimeValid,"Restaurant should be open.");
 
     }
 
@@ -60,23 +60,29 @@ class RestaurantTest {
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>MENU<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     @Test
     public void adding_item_to_menu_should_increase_menu_size_by_1(){
-
+        //Arrange and Act
         int initialMenuSize = restaurant.getMenu().size();
         restaurant.addToMenu("Sizzling brownie",319);
+
+        //Assert
         assertEquals(initialMenuSize+1,restaurant.getMenu().size());
     }
     @Test
     public void removing_item_from_menu_should_decrease_menu_size_by_1() throws itemNotFoundException {
-
+        //Arrange and Act
         int initialMenuSize = restaurant.getMenu().size();
         restaurant.removeFromMenu("Vegetable lasagne");
+
+        //Assert
         assertEquals(initialMenuSize-1,restaurant.getMenu().size());
     }
     @Test
     public void removing_item_that_does_not_exist_should_throw_exception() {
-
-        assertThrows(itemNotFoundException.class,
+        //Act and Assert
+        itemNotFoundException exp = assertThrows(itemNotFoundException.class,
                 ()->restaurant.removeFromMenu("French fries"));
+        assertEquals("French fries",exp.getMessage());
+
     }
     //<<<<<<<<<<<<<<<<<<<<<<<MENU>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 }
