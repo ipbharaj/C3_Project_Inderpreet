@@ -7,7 +7,10 @@ public class Restaurant {
     private String location;
     public LocalTime openingTime;
     public LocalTime closingTime;
-    private List<Item> menu = new ArrayList<Item>();
+    private List<Item> menu = new ArrayList<>();
+    private List<Item> selectedMenu = new ArrayList<>();
+    
+    
 
     public Restaurant(String name, String location, LocalTime openingTime, LocalTime closingTime) {
         this.name = name;
@@ -26,17 +29,26 @@ public class Restaurant {
     public LocalTime getCurrentTime(){ return  LocalTime.now(); }
 
     public List<Item> getMenu() {
-        if(menu!=null)
             return menu;
-        return null;
     }
 
-    private Item findItemByName(String itemName){
+    public List<Item> getSelectedMenu() {
+            return selectedMenu;
+    }
+    private Item findItemByName(String itemName) throws itemNotFoundException{
         for(Item item: menu) {
             if(item.getName().equals(itemName))
                 return item;
         }
-        return null;
+        throw new itemNotFoundException(itemName);
+    }
+
+    private Item findItemByNameSelectedMenu(String itemName) throws itemNotFoundException{
+        for(Item item: selectedMenu) {
+            if(item.getName().equals(itemName))
+                return item;
+        }
+        throw new itemNotFoundException(itemName);
     }
 
     public void addToMenu(String name, int price) {
@@ -47,9 +59,6 @@ public class Restaurant {
     public void removeFromMenu(String itemName) throws itemNotFoundException {
 
         Item itemToBeRemoved = findItemByName(itemName);
-        if (itemToBeRemoved == null)
-            throw new itemNotFoundException(itemName);
-
         menu.remove(itemToBeRemoved);
     }
     public void displayDetails(){
@@ -65,4 +74,21 @@ public class Restaurant {
         return name;
     }
 
+    public void selectItemFromMenu(String itemName) throws itemNotFoundException{
+        Item selectedItem = findItemByName(itemName);
+        selectedMenu.add(selectedItem);
+    }
+
+    public void unSelectItemFromMenu(String itemName) throws itemNotFoundException{
+        Item selectedItemToBeRemoved = findItemByNameSelectedMenu(itemName);
+        selectedMenu.remove(selectedItemToBeRemoved);
+    }
+
+    public int getTotalPriceSelectedItem(){
+        int total=0;
+        for (Item item: selectedMenu) {
+            total += item.getPrice();
+        }
+        return  total;
+    }
 }
