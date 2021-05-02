@@ -1,4 +1,3 @@
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -85,4 +84,55 @@ class RestaurantTest {
 
     }
     //<<<<<<<<<<<<<<<<<<<<<<<MENU>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    //<<<<<<<<<<<<<<<<<<<<<<<<selected Menu>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    @Test
+    public void select_item_form_menu_and_Selected_menu_should_increase_by_1() throws itemNotFoundException {
+        //Act
+        int selectedMenuSize = restaurant.getSelectedMenu().size();
+        restaurant.selectItemFromMenu("Sweet corn soup");
+
+        //Assert
+        assertEquals(selectedMenuSize+1,restaurant.getSelectedMenu().size());
+    }
+
+    @Test
+    public void unselect_item_form_menu_and_Selected_menu_should_decrease_by_1() throws itemNotFoundException {
+        //Act
+        restaurant.selectItemFromMenu("Sweet corn soup");
+        int selectedMenuSize = restaurant.getSelectedMenu().size();
+        restaurant.unSelectItemFromMenu("Sweet corn soup");
+
+        //Assert
+        assertEquals(selectedMenuSize-1,restaurant.getSelectedMenu().size());
+    }
+
+    @Test
+    public void unselect_item_form_empty_selected_menu_and_it_should_throw_exception() throws itemNotFoundException {
+        //Act and Assert
+        itemNotFoundException exp = assertThrows(itemNotFoundException.class,
+                ()-> restaurant.unSelectItemFromMenu("Sweet corn soup"));
+        assertEquals("Sweet corn soup",exp.getMessage(),"exception if Item not found should contain searched Item name");
+    }
+
+    @Test
+    public void select_item_form_menu_of_price_119_and_269_and_total_price_should_be_388() throws itemNotFoundException {
+        //Act
+        restaurant.selectItemFromMenu("Sweet corn soup");
+        restaurant.selectItemFromMenu("Vegetable lasagne");
+
+        //Assert
+        assertEquals(388,restaurant.getTotalPriceSelectedItem());
+    }
+
+    @Test
+    public void select_item_from_menu_which_doesnot_exist_and_expect_exception() throws itemNotFoundException{
+        //Act and Assert
+        itemNotFoundException exp = assertThrows(itemNotFoundException.class,
+                ()-> restaurant.selectItemFromMenu("Sweet corn soup1"));
+        assertEquals("Sweet corn soup1",exp.getMessage(),"exception if Item not found should contain searched Item name");
+    }
+
+    //<<<<<<<<<<<<<<<<<<<<<<<<<<selected Menu>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 }

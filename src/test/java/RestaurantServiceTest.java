@@ -27,13 +27,11 @@ class RestaurantServiceTest {
 
     //You may watch the video by Muthukumaran on how to write exceptions in Course 3: Testing and Version control: Optional content
     @Test
-    public void searching_for_non_existing_restaurant_should_throw_exception() throws restaurantNotFoundException {
+    public void searching_for_non_existing_restaurant_should_throw_exception() {
         //Arrange
         //Act
         restaurantNotFoundException exception = assertThrows(restaurantNotFoundException.class , () ->
-        {
-            service.findRestaurantByName("Amelie's cafe1");
-        });
+                service.findRestaurantByName("Amelie's cafe1"));
 
         //Assert
         assertNotNull(exception,"Exception thrown by call to find restaurant should not be null");
@@ -56,7 +54,7 @@ class RestaurantServiceTest {
     }
 
     @Test
-    public void removing_restaurant_that_does_not_exist_should_throw_exception() throws restaurantNotFoundException {
+    public void removing_restaurant_that_does_not_exist_should_throw_exception() {
         //Act and Assert
         restaurantNotFoundException exp = assertThrows(restaurantNotFoundException.class,()->service.removeRestaurant("Pantry d'or"));
         assertEquals("Pantry d'or",exp.getMessage());
@@ -70,4 +68,5 @@ class RestaurantServiceTest {
         assertEquals(initialNumberOfRestaurants + 1,service.getRestaurants().size());
     }
     //<<<<<<<<<<<<<<<<<<<<ADMIN: ADDING & REMOVING RESTAURANTS>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 }
