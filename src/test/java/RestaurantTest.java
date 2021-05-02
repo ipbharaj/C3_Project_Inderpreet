@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.time.LocalTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -57,6 +58,19 @@ class RestaurantTest {
 
 
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>MENU<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+    @Test
+    public void getmenu_should_return_null_without_items_in_list() throws itemNotFoundException{
+        //Act
+        restaurant.removeFromMenu("Sweet corn soup");
+        restaurant.removeFromMenu("Vegetable lasagne");
+
+        List<Item> menu = restaurant.getMenu();
+        //Assert
+        assertNotNull(menu);
+        assertEquals(0,menu.size());
+    }
+
     @Test
     public void adding_item_to_menu_should_increase_menu_size_by_1(){
         //Arrange and Act
@@ -88,6 +102,15 @@ class RestaurantTest {
     //<<<<<<<<<<<<<<<<<<<<<<<<selected Menu>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     @Test
+    public void select_item_should_return_not_null_without_selecting(){
+        //Act
+        List<Item> selectedItem = restaurant.getSelectedMenu();
+        //Assert
+        assertNotNull(selectedItem);
+        assertEquals(0,selectedItem.size());
+    }
+
+    @Test
     public void select_item_form_menu_and_Selected_menu_should_increase_by_1() throws itemNotFoundException {
         //Act
         int selectedMenuSize = restaurant.getSelectedMenu().size();
@@ -109,7 +132,7 @@ class RestaurantTest {
     }
 
     @Test
-    public void unselect_item_form_empty_selected_menu_and_it_should_throw_exception() throws itemNotFoundException {
+    public void unselect_item_form_empty_selected_menu_and_it_should_throw_exception()  {
         //Act and Assert
         itemNotFoundException exp = assertThrows(itemNotFoundException.class,
                 ()-> restaurant.unSelectItemFromMenu("Sweet corn soup"));
@@ -127,7 +150,7 @@ class RestaurantTest {
     }
 
     @Test
-    public void select_item_from_menu_which_doesnot_exist_and_expect_exception() throws itemNotFoundException{
+    public void select_item_from_menu_which_doesnot_exist_and_expect_exception(){
         //Act and Assert
         itemNotFoundException exp = assertThrows(itemNotFoundException.class,
                 ()-> restaurant.selectItemFromMenu("Sweet corn soup1"));
